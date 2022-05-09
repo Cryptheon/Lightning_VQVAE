@@ -1,0 +1,32 @@
+#!/bin/bash
+#SBATCH --time=12:00:00
+#SBATCH -p gpu
+#SBATCH --nodes=1
+#SBATCH --gres=gpu:4
+#SBATCH --mem=32G
+#SBATCH --job-name=Autoencoder_CLIP
+#SBATCH -o autoencoder.out
+
+module purge
+module load 2021
+module load 2021_Delft3D
+module load Anaconda3/2021.05
+
+export PYTHONUNBUFFERED=1
+export PYTHONFAULTHANDLER=1
+
+#source activate
+source activate examode_clip
+
+srun python train_pl.py --folder /projects/0/examode/lmdb/lmdb_magnification_10x/lmdb_patches/ \
+  --image_size 224 \
+  --batch_size 128 \
+  --max_epochs 10000 \
+  --gpus 4 \
+  --num_workers 4 \
+  --num_nodes 1 \
+  --shuffle True \
+  --accelerator ddp \
+  --precision 32 \
+  --shuffle True \
+  --check_val_every_n_epoch 25

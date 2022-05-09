@@ -1,0 +1,6 @@
+VQVAE:
+    input_dim: 3
+    embed_dim: 64
+    codebook_size: 512
+    codebook_dim: 8
+    beta: 0.25
